@@ -1,4 +1,4 @@
-ocal Player = game.Players.LocalPlayer
+local Player = game.Players.LocalPlayer
 local Mouse = Player:GetMouse()
 
 local TweenService = game:GetService("TweenService")
@@ -166,32 +166,32 @@ local UILibrary = {}
 
 function UILibrary.Load(GUITitle)
 	local TargetedParent = RunService:IsStudio() and Player:WaitForChild("PlayerGui") or CoreGuiService
-	
+
 	local FindOldInstance = TargetedParent:FindFirstChild(GUITitle)
-	
+
 	if FindOldInstance then
 		FindOldInstance:Destroy()
 	end
-	
+
 	local NewInstance, ContainerFrame, ContainerShadow, MainFrame
-	
+
 	NewInstance = Instance.new("ScreenGui")
 	NewInstance.Name = GUITitle
 	NewInstance.Parent = TargetedParent
-	
+
 	ContainerFrame = Frame()
 	ContainerFrame.Name = "ContainerFrame"
 	ContainerFrame.Size = UDim2.new(0,500,0,300)
 	ContainerFrame.Position = UDim2.new(0.5,-250,0.5,-150)
 	ContainerFrame.BackgroundTransparency = 1
 	ContainerFrame.Parent = NewInstance
-	
+
 	ContainerShadow = DropShadow()
 	ContainerShadow.Name = "Shadow"
 	ContainerShadow.Parent = ContainerFrame
-	
+
 	Level += 1
-	
+
 	MainFrame = RoundBox(5)
 	MainFrame.ClipsDescendants = true
 	MainFrame.Name = "MainFrame"
@@ -199,9 +199,9 @@ function UILibrary.Load(GUITitle)
 	MainFrame.Position = UDim2.new(0,25,0,15)
 	MainFrame.ImageColor3 = Color3.fromRGB(30,30,30)
 	MainFrame.Parent = ContainerFrame
-	
+
 	local MenuBar, DisplayFrame, TitleBar
-	
+
 	MenuBar = ScrollingFrame()
 	MenuBar.Name = "MenuBar"
 	MenuBar.BackgroundTransparency = 0.7
@@ -210,35 +210,35 @@ function UILibrary.Load(GUITitle)
 	MenuBar.Position = UDim2.new(0,5,0,30)
 	MenuBar.CanvasSize = UDim2.new(0,0,0,0)
 	MenuBar.Parent = MainFrame
-	
+
 	DisplayFrame = RoundBox(5)
 	DisplayFrame.Name = "Display"
 	DisplayFrame.ImageColor3 = Color3.fromRGB(20,20,20)
 	DisplayFrame.Size = UDim2.new(1,-115,0,235)
 	DisplayFrame.Position = UDim2.new(0,110,0,30)
 	DisplayFrame.Parent = MainFrame
-	
+
 	TitleBar = RoundBox(5)
 	TitleBar.Name = "TitleBar"
 	TitleBar.ImageColor3 = Color3.fromRGB(40,40,40)
 	TitleBar.Size = UDim2.new(1,-10,0,20)
 	TitleBar.Position = UDim2.new(0,5,0,5)
 	TitleBar.Parent = MainFrame
-	
+
 	Level += 1
-	
+
 	local MinimiseButton, TitleButton
 	local MinimiseToggle = true
-	
+
 	MinimiseButton = TitleIcon(true)
 	MinimiseButton.Name = "Minimise"
 	MinimiseButton.Parent = TitleBar
-	
+
 	TitleButton = TextButton(GUITitle, 14)
 	TitleButton.Name = "TitleButton"
 	TitleButton.Size = UDim2.new(1,-20,1,0)
 	TitleButton.Parent = TitleBar
-	
+
 	MinimiseButton.MouseButton1Down:Connect(function()
 		MinimiseToggle = not MinimiseToggle
 		if not MinimiseToggle then
@@ -251,7 +251,7 @@ function UILibrary.Load(GUITitle)
 			Tween(ContainerShadow, {ImageTransparency = DropShadowTransparency})
 		end
 	end)
-	
+
 	TitleButton.MouseButton1Down:Connect(function()
 		local LastMX, LastMY = Mouse.X, Mouse.Y
 		local Move, Kill
@@ -268,35 +268,35 @@ function UILibrary.Load(GUITitle)
 			end
 		end)
 	end)
-	
+
 	Level += 1
-	
+
 	local MenuListLayout
-	
+
 	MenuListLayout = Instance.new("UIListLayout")
 	MenuListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	MenuListLayout.Padding = UDim.new(0,5)
 	MenuListLayout.Parent = MenuBar
-	
+
 	local TabCount = 0
-	
+
 	local TabLibrary = {}
-	
+
 	function TabLibrary.AddPage(PageTitle, SearchBarIncluded)
 		local SearchBarIncluded = (SearchBarIncluded == nil) and true or SearchBarIncluded
-		
+
 		local PageContainer = RoundBox(5)
 		PageContainer.Name = PageTitle
 		PageContainer.Size = UDim2.new(1,0,0,20)
 		PageContainer.LayoutOrder = TabCount
 		PageContainer.ImageColor3 = (TabCount == 0) and Color3.fromRGB(50,50,50) or Color3.fromRGB(40,40,40)
 		PageContainer.Parent = MenuBar
-		
+
 		local PageButton = TextButton(PageTitle, 14)
 		PageButton.Name = PageTitle.."Button"
 		PageButton.TextTransparency = (TabCount == 0) and 0 or 0.5
 		PageButton.Parent = PageContainer
-		
+
 		PageButton.MouseButton1Down:Connect(function()
 			spawn(function()
 				for _, Button in next, MenuBar:GetChildren() do
@@ -316,40 +316,40 @@ function UILibrary.Load(GUITitle)
 				end
 			end)
 		end)
-		
+
 		local DisplayPage = ScrollingFrame()
 		DisplayPage.Visible = (TabCount == 0)
 		DisplayPage.Name = PageTitle
 		DisplayPage.Size = UDim2.new(1,0,1,0)
 		DisplayPage.Parent = DisplayFrame
-		
+
 		TabCount += 1
-		
+
 		local DisplayList = Instance.new("UIListLayout")
 		DisplayList.SortOrder = Enum.SortOrder.LayoutOrder
 		DisplayList.Padding = UDim.new(0,5)
 		DisplayList.Parent = DisplayPage
-		
+
 		DisplayList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 			local Y1 = DisplayList.AbsoluteContentSize.Y
 			local Y2 = DisplayPage.AbsoluteWindowSize.Y
 			DisplayPage.CanvasSize = UDim2.new(0,0,(Y1/Y2)+0.05,0)
 		end)
-		
+
 		local DisplayPadding = Instance.new("UIPadding")
 		DisplayPadding.PaddingBottom = UDim.new(0,5)
 		DisplayPadding.PaddingTop = UDim.new(0,5)
 		DisplayPadding.PaddingLeft = UDim.new(0,5)
 		DisplayPadding.PaddingRight = UDim.new(0,5)
 		DisplayPadding.Parent = DisplayPage
-		
+
 		if SearchBarIncluded then
 			local SearchBarContainer = RoundBox(5)
 			SearchBarContainer.Name = "SearchBar"
 			SearchBarContainer.ImageColor3 = Color3.fromRGB(35,35,35)
 			SearchBarContainer.Size = UDim2.new(1,0,0,20)
 			SearchBarContainer.Parent = DisplayPage
-			
+
 			local SearchBox = TextBox("Search...")
 			SearchBox.Name = "SearchInput"
 			SearchBox.Position = UDim2.new(0,20,0,0)
@@ -357,13 +357,13 @@ function UILibrary.Load(GUITitle)
 			SearchBox.TextTransparency = 0.5
 			SearchBox.TextXAlignment = Enum.TextXAlignment.Left
 			SearchBox.Parent = SearchBarContainer
-			
+
 			local SearchIcon = SearchIcon()
 			SearchIcon.Parent = SearchBarContainer
-			
+
 			SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
 				local NewValue = SearchBox.Text
-				
+
 				for _, Element in next, DisplayPage:GetChildren() do
 					if Element:IsA("Frame") then
 						if not string.find(Element.Name:lower(), "label") then
@@ -377,25 +377,25 @@ function UILibrary.Load(GUITitle)
 				end
 			end)
 		end
-		
+
 		local PageLibrary = {}
-		
+
 		function PageLibrary.AddButton(Text, Callback, Parent, Underline)
 			local ButtonContainer = Frame()
 			ButtonContainer.Name = Text.."BUTTON"
 			ButtonContainer.Size = UDim2.new(1,0,0,20)
 			ButtonContainer.BackgroundTransparency = 1
 			ButtonContainer.Parent = Parent or DisplayPage
-			
+
 			local ButtonForeground = RoundBox(5)
 			ButtonForeground.Name = "ButtonForeground"
 			ButtonForeground.Size = UDim2.new(1,0,1,0)
 			ButtonForeground.ImageColor3 = Color3.fromRGB(35,35,35)
 			ButtonForeground.Parent = ButtonContainer
-			
+
 			if Underline then
 				local TextSize = TextService:GetTextSize(Text, 12, Enum.Font.Gotham, Vector2.new(0,0))
-			
+
 				local BottomEffect = Frame()
 				BottomEffect.Size = UDim2.new(0,TextSize.X,0,1)
 				BottomEffect.Position = UDim2.new(0.5,(-TextSize.X/2)-1,1,-1)
@@ -403,10 +403,10 @@ function UILibrary.Load(GUITitle)
 				BottomEffect.BackgroundTransparency = 0.5
 				BottomEffect.Parent = ButtonForeground
 			end
-			
+
 			local HiddenButton = TextButton(Text, 12)
 			HiddenButton.Parent = ButtonForeground
-			
+
 			HiddenButton.MouseButton1Down:Connect(function()
 				Callback()
 				Tween(ButtonForeground, {ImageColor3 = Color3.fromRGB(45,45,45)})
@@ -416,74 +416,74 @@ function UILibrary.Load(GUITitle)
 				Tween(HiddenButton, {TextTransparency = 0})
 			end)
 		end
-		
+
 		function PageLibrary.AddLabel(Text)
 			local LabelContainer = Frame()
 			LabelContainer.Name = Text.."LABEL"
 			LabelContainer.Size = UDim2.new(1,0,0,20)
 			LabelContainer.BackgroundTransparency = 1
 			LabelContainer.Parent = DisplayPage
-			
+
 			local LabelForeground = RoundBox(5)
 			LabelForeground.Name = "LabelForeground"
 			LabelForeground.ImageColor3 = Color3.fromRGB(45,45,45)
 			LabelForeground.Size = UDim2.new(1,0,1,0)
 			LabelForeground.Parent = LabelContainer
-			
+
 			local HiddenLabel = TextLabel(Text, 12)
 			HiddenLabel.Parent = LabelForeground
 		end
-		
+
 		function PageLibrary.AddDropdown(Text, ConfigurationArray, Callback)
 			local DropdownArray = ConfigurationArray or {}
-			
+
 			local DropdownToggle = false
-			
+
 			local DropdownContainer = Frame()
 			DropdownContainer.Size = UDim2.new(1,0,0,20)
 			DropdownContainer.Name = Text.."DROPDOWN"
 			DropdownContainer.BackgroundTransparency = 1
 			DropdownContainer.Parent = DisplayPage
-			
+
 			local DropdownForeground = RoundBox(5)
 			DropdownForeground.ClipsDescendants = true
 			DropdownForeground.ImageColor3 = Color3.fromRGB(35,35,35)
 			DropdownForeground.Size = UDim2.new(1,0,1,0)
 			DropdownForeground.Parent = DropdownContainer
-			
+
 			local DropdownExpander = DropdownIcon(true)
 			DropdownExpander.Parent = DropdownForeground
-			
+
 			local DropdownLabel = TextLabel(Text, 12)
 			DropdownLabel.Size = UDim2.new(1,0,0,20)
 			DropdownLabel.Parent = DropdownForeground
-			
+
 			local DropdownFrame = Frame()
 			DropdownFrame.Position = UDim2.new(0,0,0,20)
 			DropdownFrame.BackgroundTransparency = 1
 			DropdownFrame.Size = UDim2.new(1,0,0,#DropdownArray*20)
 			DropdownFrame.Parent = DropdownForeground
-			
+
 			local DropdownList = Instance.new("UIListLayout")
 			DropdownList.Parent = DropdownFrame
-			
+
 			for OptionIndex, Option in next, DropdownArray do
 				PageLibrary.AddButton(Option, function()
 					Callback(Option)
 					DropdownLabel.Text = Text..": "..Option
 				end, DropdownFrame, OptionIndex < #DropdownArray)
 			end
-			
+
 			DropdownExpander.MouseButton1Down:Connect(function()
 				DropdownToggle = not DropdownToggle
 				Tween(DropdownContainer, {Size = DropdownToggle and UDim2.new(1,0,0,20+(#DropdownArray*20)) or UDim2.new(1,0,0,20)})
 				Tween(DropdownExpander, {Rotation = DropdownToggle and 135 or 0})
 			end)
 		end
-		
+
 		function PageLibrary.AddColourPicker(Text, DefaultColour, Callback)
 			local DefaultColour = DefaultColour or Color3.fromRGB(255,255,255)
-			
+
 			local ColourDictionary = {
 				white = Color3.fromRGB(255,255,255),
 				black = Color3.fromRGB(0,0,0),
@@ -491,131 +491,131 @@ function UILibrary.Load(GUITitle)
 				green = Color3.fromRGB(0,255,0),
 				blue = Color3.fromRGB(0,0,255)
 			}
-			
+
 			if typeof(DefaultColour) == "table" then
 				DefaultColour = Color3.fromRGB(DefaultColour[1] or 255, DefaultColour[2] or 255, DefaultColour[3] or 255)
 			elseif typeof(DefaultColour) == "string" then
 				DefaultColour = ColourDictionary[DefaultColour:lower()] or ColourDictionary["white"]
 			end
-			
+
 			local PickerContainer = Frame()
 			PickerContainer.ClipsDescendants = true
 			PickerContainer.Size = UDim2.new(1,0,0,20)
 			PickerContainer.Name = Text.."COLOURPICKER"
 			PickerContainer.BackgroundTransparency = 1
 			PickerContainer.Parent = DisplayPage
-			
+
 			local ColourTracker = Instance.new("Color3Value")
 			ColourTracker.Value = DefaultColour
 			ColourTracker.Parent = PickerContainer
-			
+
 			local PickerLeftSide, PickerRightSide, PickerFrame = RoundBox(5), RoundBox(5), RoundBox(5)
-			
+
 			PickerLeftSide.Size = UDim2.new(1,-22,1,0)
 			PickerLeftSide.ImageColor3 = Color3.fromRGB(35,35,35)
 			PickerLeftSide.Parent = PickerContainer
-			
+
 			PickerRightSide.Size = UDim2.new(0,20,1,0)
 			PickerRightSide.Position = UDim2.new(1,-20,0,0)
 			PickerRightSide.ImageColor3 = DefaultColour
 			PickerRightSide.Parent = PickerContainer
-			
+
 			PickerFrame.ImageColor3 = Color3.fromRGB(35,35,35)
 			PickerFrame.Size = UDim2.new(1,-22,0,60)
 			PickerFrame.Position = UDim2.new(0,0,0,20)
 			PickerFrame.Parent = PickerContainer
-			
+
 			local PickerList = Instance.new("UIListLayout")
 			PickerList.SortOrder = Enum.SortOrder.LayoutOrder
 			PickerList.Parent = PickerFrame
-			
+
 			local RedPicker = PageLibrary.AddSlider("R", {Min = 0, Max = 255, Def = ColourTracker.Value.R * 255}, function(Value)
 				ColourTracker.Value = Color3.fromRGB(Value, ColourTracker.Value.G * 255, ColourTracker.Value.B * 255)
 				Callback(ColourTracker.Value)
 			end, PickerFrame)
-			
+
 			local BluePicker = PageLibrary.AddSlider("G", {Min = 0, Max = 255, Def = ColourTracker.Value.G * 255}, function(Value)
 				ColourTracker.Value = Color3.fromRGB(ColourTracker.Value.R * 255, Value, ColourTracker.Value.B * 255)
 				Callback(ColourTracker.Value)
 			end, PickerFrame)
-			
+
 			local GreenPicker = PageLibrary.AddSlider("B", {Min = 0, Max = 255, Def = ColourTracker.Value.B * 255}, function(Value)
 				ColourTracker.Value = Color3.fromRGB(ColourTracker.Value.R * 255, ColourTracker.Value.G * 255, Value)
 				Callback(ColourTracker.Value)
 			end, PickerFrame)
-			
+
 			local EffectLeft, EffectRight = Frame(), Frame()
-			
+
 			EffectLeft.BackgroundColor3 = Color3.fromRGB(35,35,35)
 			EffectLeft.Position = UDim2.new(1,-5,0,0)
 			EffectLeft.Size = UDim2.new(0,5,1,0)
 			EffectLeft.Parent = PickerLeftSide
-			
+
 			EffectRight.BackgroundColor3 = DefaultColour
 			EffectRight.Size = UDim2.new(0,5,1,0)
 			EffectRight.Parent = PickerRightSide
-			
+
 			local PickerLabel = TextLabel(Text, 12)
 			PickerLabel.Size = UDim2.new(1,0,0,20)
 			PickerLabel.Parent = PickerLeftSide
-			
+
 			ColourTracker:GetPropertyChangedSignal("Value"):Connect(function()
 				local NewValue = ColourTracker.Value
 				EffectRight.BackgroundColor3 = NewValue
 				PickerRightSide.ImageColor3 = NewValue
 			end)
-			
+
 			local PickerToggle = false
-			
+
 			local PickerButton = TextButton("")
 			PickerButton.Parent = PickerRightSide
-			
+
 			PickerButton.MouseButton1Down:Connect(function()
 				PickerToggle = not PickerToggle
 				Tween(PickerContainer, {Size = PickerToggle and UDim2.new(1,0,0,80) or UDim2.new(1,0,0,20)})
 			end)
 		end
-		
+
 		function PageLibrary.AddSlider(Text, ConfigurationDictionary, Callback, Parent)
 			local Configuration = ConfigurationDictionary
 			local Minimum = Configuration.Minimum or Configuration.minimum or Configuration.Min or Configuration.min
 			local Maximum = Configuration.Maximum or Configuration.maximum or Configuration.Max or Configuration.max
 			local Default = Configuration.Default or Configuration.default or Configuration.Def or Configuration.def
-			
+
 			if Minimum > Maximum then
 				local StoreValue = Minimum
 				Minimum = Maximum
 				Maximum = StoreValue
 			end
-			
+
 			Default = math.clamp(Default, Minimum, Maximum)
-			
+
 			local DefaultScale = Default/Maximum
-			
+
 			local SliderContainer = Frame()
 			SliderContainer.Name = Text.."SLIDER"
 			SliderContainer.Size = UDim2.new(1,0,0,20)
 			SliderContainer.BackgroundTransparency = 1
 			SliderContainer.Parent = Parent or DisplayPage
-			
+
 			local SliderForeground = RoundBox(5)
 			SliderForeground.Name = "SliderForeground"
 			SliderForeground.ImageColor3 = Color3.fromRGB(35,35,35)
 			SliderForeground.Size = UDim2.new(1,0,1,0)
 			SliderForeground.Parent = SliderContainer
-			
+
 			local SliderButton = TextButton(Text..": "..Default)
 			SliderButton.Size = UDim2.new(1,0,1,0)
 			SliderButton.ZIndex = 6
 			SliderButton.Parent = SliderForeground
-			
+
 			local SliderFill = RoundBox(5)
 			SliderFill.Size = UDim2.new(DefaultScale,0,1,0)
 			SliderFill.ImageColor3 = Color3.fromRGB(70,70,70)
 			SliderFill.ZIndex = 5
 			SliderFill.ImageTransparency = 0.7
 			SliderFill.Parent = SliderButton
-			
+
 			SliderButton.MouseButton1Down:Connect(function()
 				Tween(SliderFill, {ImageTransparency = 0.5})
 				local X, Y, XScale, YScale = GetXY(SliderButton)
@@ -643,61 +643,61 @@ function UILibrary.Load(GUITitle)
 				end)
 			end)
 		end
-		
+
 		function PageLibrary.AddToggle(Text, Default, Callback)
 			local ThisToggle = Default or false
-			
+
 			local ToggleContainer = Frame()
 			ToggleContainer.Name = Text.."TOGGLE"
 			ToggleContainer.Size = UDim2.new(1,0,0,20)
 			ToggleContainer.BackgroundTransparency = 1
 			ToggleContainer.Parent = DisplayPage
-			
+
 			local ToggleLeftSide, ToggleRightSide, EffectFrame, RightTick = RoundBox(5), RoundBox(5), Frame(), TickIcon()
 			local FlatLeft, FlatRight = Frame(), Frame()
-			
+
 			ToggleLeftSide.Size = UDim2.new(1,-22,1,0)
 			ToggleLeftSide.ImageColor3 = Color3.fromRGB(35,35,35)
 			ToggleLeftSide.Parent = ToggleContainer
-			
+
 			ToggleRightSide.Position = UDim2.new(1,-20,0,0)
 			ToggleRightSide.Size = UDim2.new(0,20,1,0)
 			ToggleRightSide.ImageColor3 = Color3.fromRGB(45,45,45)
 			ToggleRightSide.Parent = ToggleContainer
-			
+
 			FlatLeft.BackgroundColor3 = Color3.fromRGB(35,35,35)
 			FlatLeft.Size = UDim2.new(0,5,1,0)
 			FlatLeft.Position = UDim2.new(1,-5,0,0)
 			FlatLeft.Parent = ToggleLeftSide
-			
+
 			FlatRight.BackgroundColor3 = Color3.fromRGB(45,45,45)
 			FlatRight.Size = UDim2.new(0,5,1,0)
 			FlatRight.Parent = ToggleRightSide
-			
+
 			EffectFrame.BackgroundColor3 = ThisToggle and Color3.fromRGB(0,255,109) or Color3.fromRGB(255,160,160)
 			EffectFrame.Position = UDim2.new(1,-22,0.2,0)
 			EffectFrame.Size = UDim2.new(0,2,0.6,0)
 			EffectFrame.Parent = ToggleContainer
-			
+
 			RightTick.ImageTransparency = ThisToggle and 0 or 1
 			RightTick.Parent = ToggleRightSide
-			
+
 			local ToggleButton = TextButton(Text, 12)
 			ToggleButton.Name = "ToggleButton"
 			ToggleButton.Size = UDim2.new(1,0,1,0)
 			ToggleButton.Parent = ToggleLeftSide
-			
+
 			ToggleButton.MouseButton1Down:Connect(function()
 				ThisToggle = not ThisToggle
 				Tween(EffectFrame, {BackgroundColor3 = ThisToggle and Color3.fromRGB(0,255,109) or Color3.fromRGB(255,160,160)})
 				Tween(RightTick, {ImageTransparency = ThisToggle and 0 or 1})
 				Callback(ThisToggle)
-			end)	
+			end)
 		end
-		
+
 		return PageLibrary
 	end
-	
+
 	return TabLibrary
 end
 
