@@ -1,5 +1,5 @@
------- THIS WAS LORIS#9999 AND THE ONE WHO GAVE DARK HUB SOURCE TO EHUB
-if game.CoreGui:FindFirstChild("FUCK DARK HUB") then
+
+if game.CoreGui:FindFirstChild("DarkHubLib") then
     game.CoreGui.DarkHubLib:Destroy()
 end
 game:GetService("UserInputService").InputBegan:connect(
